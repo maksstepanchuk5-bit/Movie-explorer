@@ -1,17 +1,39 @@
+import { Link } from "react-router-dom";
 import { useWatchlist } from "../store/watchlist";
 
-const WatchlistPage = () => {
-    const {watchlist} = useWatchlist ();
+function WatchlistPage() {
+  const { watchlist } = useWatchlist();
 
-    if (!watchlist.length) return <div>No movies yet</div>;
-
+  if (!watchlist.length) {
     return (
-        <div>
-            {watchlist.map((movie) => (
-                <div key={movie.id}>{movie.title}</div>
-            ))}
+      <div className="page-stack">
+        <h1 className="page-title">Watchlist</h1>
+        <div className="empty-state">
+          <p>No saved movies yet.</p>
+          <p className="muted mt-8">
+            Add titles from the home page to see them here.
+          </p>
+          <Link className="nav-link link-inline" to="/">
+            Browse movies
+          </Link>
         </div>
+      </div>
     );
-};
+  }
 
-export default WatchlistPage
+  return (
+    <div className="page-stack">
+      <h1 className="page-title">Watchlist</h1>
+      <p className="muted">{watchlist.length} saved</p>
+      <div>
+        {watchlist.map((movie) => (
+          <div key={movie.id} className="watchlist-row">
+            <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default WatchlistPage;

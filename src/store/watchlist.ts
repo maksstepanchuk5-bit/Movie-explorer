@@ -1,9 +1,10 @@
 import { create } from "zustand";
+import type { MovieListItem } from "../types/movie";
 
 type Store = {
-    watchlist: any[];
-    add: (movie: any) => void;
-    remove: (id: number) => void;
+  watchlist: MovieListItem[];
+  add: (movie: MovieListItem) => void;
+  remove: (id: number) => void;
 };
 
 export const useWatchlist = create<Store>((set) => ({
