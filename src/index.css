@@ -275,6 +275,18 @@ a {
   background: var(--bg);
 }
 
+.movie-card-poster-fallback,
+.detail-poster-fallback {
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  line-height: 1.3;
+  background: var(--bg);
+}
+
 .movie-card-body {
   display: flex;
   flex-direction: column;
@@ -460,6 +472,7 @@ a {
 .detail-poster {
   width: 100%;
   max-width: 220px;
+  min-height: 330px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);

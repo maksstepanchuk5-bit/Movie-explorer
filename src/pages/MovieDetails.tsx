@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { getMovieDetails } from "../api/tmdb";
 
 function DetailsSkeleton() {
@@ -20,6 +21,7 @@ function DetailsSkeleton() {
 function MovieDetails() {
   const { id } = useParams();
   const numericId = Number(id);
+  const [failedPosterSrc, setFailedPosterSrc] = useState<string | null>(null);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["movie", id],
@@ -58,20 +60,27 @@ function MovieDetails() {
   }
 
   const movie = data.data;
-  const posterSrc = movie.poster_path
-    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-    : "https://via.placeholder.com/500x750?text=No+Image";
+  const posterSrc = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null;
+  const posterAlt = movie.title;
+  const showPoster = Boolean(posterSrc) && failedPosterSrc !== posterSrc;
 
   return (
     <div className="page-stack">
       <div className="detail-layout">
-        <img
-          className="detail-poster"
-          src={posterSrc}
-          alt={movie.title}
-          loading="eager"
-          decoding="async"
-        />
+        {showPoster ? (
+          <img
+            className="detail-poster"
+            src={posterSrc ?? undefined}
+            alt={posterAlt}
+            loading="eager"
+            decoding="async"
+            onError={() => setFailedPosterSrc(posterSrc)}
+          />
+        ) : (
+          <div className="detail-poster detail-poster-fallback" role="img" aria-label={posterAlt}>
+            {posterAlt}
+          </div>
+        )}
         <div className="detail-body">
           <h1 className="page-title detail-title">{movie.title}</h1>
           <div className="detail-meta">

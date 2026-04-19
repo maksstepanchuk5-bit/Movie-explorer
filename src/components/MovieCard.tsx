@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { useWatchlist } from "../store/watchlist";
 import { Link } from "react-router-dom";
 import type { MovieListItem } from "../types/movie";
@@ -10,19 +10,27 @@ type Props = {
 const MovieCard = memo(function MovieCard({ movie }: Props) {
   const { add, remove, watchlist } = useWatchlist();
   const isSaved = watchlist.some((m) => m.id === movie.id);
-  const posterUrl = movie.poster_path
-    ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
-    : "https://via.placeholder.com/200x300?text=No+Image";
+  const [failedPosterSrc, setFailedPosterSrc] = useState<string | null>(null);
+  const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : null;
+  const posterAlt = movie.title;
+  const showPoster = Boolean(posterUrl) && failedPosterSrc !== posterUrl;
 
   return (
     <article className="movie-card">
-      <img
-        className="movie-card-poster"
-        src={posterUrl}
-        alt={movie.title}
-        loading="lazy"
-        decoding="async"
-      />
+      {showPoster ? (
+        <img
+          className="movie-card-poster"
+          src={posterUrl ?? undefined}
+          alt={posterAlt}
+          loading="lazy"
+          decoding="async"
+          onError={() => setFailedPosterSrc(posterUrl)}
+        />
+      ) : (
+        <div className="movie-card-poster movie-card-poster-fallback" role="img" aria-label={posterAlt}>
+          {posterAlt}
+        </div>
+      )}
       <div className="movie-card-body">
         <Link className="movie-card-title" to={`/movie/${movie.id}`}>
           <h3>{movie.title}</h3>
