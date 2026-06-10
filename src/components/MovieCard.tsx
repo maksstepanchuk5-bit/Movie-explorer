@@ -10,10 +10,11 @@ type Props = {
 const MovieCard = memo(function MovieCard({ movie }: Props) {
   const { add, remove, watchlist } = useWatchlist();
   const isSaved = watchlist.some((m) => m.id === movie.id);
-  const [failedPosterSrc, setFailedPosterSrc] = useState<string | null>(null);
+  const [failedPosterKeys, setFailedPosterKeys] = useState<Set<string>>(() => new Set());
   const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : null;
+  const posterKey = `${movie.id}:${posterUrl ?? ""}`;
   const posterAlt = movie.title;
-  const showPoster = Boolean(posterUrl) && failedPosterSrc !== posterUrl;
+  const showPoster = Boolean(posterUrl) && !failedPosterKeys.has(posterKey);
 
   return (
     <article className="movie-card">
@@ -24,7 +25,9 @@ const MovieCard = memo(function MovieCard({ movie }: Props) {
           alt={posterAlt}
           loading="lazy"
           decoding="async"
-          onError={() => setFailedPosterSrc(posterUrl)}
+          onError={() =>
+            setFailedPosterKeys((prev) => new Set(prev).add(posterKey))
+          }
         />
       ) : (
         <div className="movie-card-poster movie-card-poster-fallback" role="img" aria-label={posterAlt}>

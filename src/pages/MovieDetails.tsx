@@ -21,7 +21,7 @@ function DetailsSkeleton() {
 function MovieDetails() {
   const { id } = useParams();
   const numericId = Number(id);
-  const [failedPosterSrc, setFailedPosterSrc] = useState<string | null>(null);
+  const [failedPosterKeys, setFailedPosterKeys] = useState<Set<string>>(() => new Set());
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["movie", id],
@@ -61,8 +61,9 @@ function MovieDetails() {
 
   const movie = data.data;
   const posterSrc = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null;
+  const posterKey = `${movie.id}:${posterSrc ?? ""}`;
   const posterAlt = movie.title;
-  const showPoster = Boolean(posterSrc) && failedPosterSrc !== posterSrc;
+  const showPoster = Boolean(posterSrc) && !failedPosterKeys.has(posterKey);
 
   return (
     <div className="page-stack">
@@ -74,7 +75,9 @@ function MovieDetails() {
             alt={posterAlt}
             loading="eager"
             decoding="async"
-            onError={() => setFailedPosterSrc(posterSrc)}
+            onError={() =>
+              setFailedPosterKeys((prev) => new Set(prev).add(posterKey))
+            }
           />
         ) : (
           <div className="detail-poster detail-poster-fallback" role="img" aria-label={posterAlt}>

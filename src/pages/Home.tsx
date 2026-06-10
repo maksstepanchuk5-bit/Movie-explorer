@@ -36,15 +36,17 @@ function Home() {
     });
 
   useEffect(() => {
+    if (isLoading) return;
+
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0]?.isIntersecting && hasNextPage) {
+      if (entries[0]?.isIntersecting && hasNextPage && !isFetchingNextPage) {
         fetchNextPage();
       }
     });
     const el = loadMoreRef.current;
     if (el) observer.observe(el);
     return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, debouncedQuery]);
 
   const movies = data?.pages.flatMap((page) => page.data.results) ?? [];
 
@@ -90,7 +92,11 @@ function Home() {
 
       {movies.length === 0 && (
         <div className="empty-state">
-          <p>No results for your search. Try another title.</p>
+          <p>
+            {debouncedQuery
+              ? "No results for your search. Try another title."
+              : "No movies to show right now. Try again later."}
+          </p>
         </div>
       )}
 

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useWatchlist } from "../store/watchlist";
 
 function WatchlistPage() {
-  const { watchlist } = useWatchlist();
+  const { watchlist, remove } = useWatchlist();
 
   if (!watchlist.length) {
     return (
@@ -29,6 +29,13 @@ function WatchlistPage() {
         {watchlist.map((movie) => (
           <div key={movie.id} className="watchlist-row">
             <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+            <button
+              type="button"
+              className="btn btn-sm"
+              onClick={() => remove(movie.id)}
+            >
+              Remove
+            </button>
           </div>
         ))}
       </div>
