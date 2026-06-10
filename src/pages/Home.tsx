@@ -24,17 +24,18 @@ function Home() {
       queryKey: ["movies", debouncedQuery],
       queryFn: ({ pageParam = 1 }) => {
         if (debouncedQuery) {
-          return searchMovies(debouncedQuery);
+          return searchMovies(debouncedQuery, pageParam);
         }
         return getPopularMovies(pageParam);
       },
-      getNextPageParam: (_, allPages) => allPages.length + 1,
+      getNextPageParam: (lastPage) => {
+        const { page, total_pages } = lastPage.data;
+        return page < total_pages ? page + 1 : undefined;
+      },
       initialPageParam: 1,
     });
 
   useEffect(() => {
-    if (debouncedQuery) return;
-
     const observer = new IntersectionObserver((entries) => {
       if (entries[0]?.isIntersecting && hasNextPage) {
         fetchNextPage();
@@ -43,7 +44,7 @@ function Home() {
     const el = loadMoreRef.current;
     if (el) observer.observe(el);
     return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, debouncedQuery]);
+  }, [fetchNextPage, hasNextPage]);
 
   const movies = data?.pages.flatMap((page) => page.data.results) ?? [];
 
@@ -100,7 +101,7 @@ function Home() {
           ))}
           <div ref={loadMoreRef} className="load-more-sentinel" />
           {isFetchingNextPage && <p className="end-hint">Loading more…</p>}
-          {!debouncedQuery && !hasNextPage && !isFetchingNextPage && (
+          {!hasNextPage && !isFetchingNextPage && (
             <p className="end-hint">You&apos;ve reached the end.</p>
           )}
         </div>

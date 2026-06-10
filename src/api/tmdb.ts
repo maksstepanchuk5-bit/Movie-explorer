@@ -10,8 +10,8 @@ export const api = axios.create({
 export const getPopularMovies = (page = 1) =>
   api.get(`/movie/popular?api_key=${API_KEY}&page=${page}`);
 
-export const searchMovies = (query: string) =>
-  api.get(`/search/movie?api_key=${API_KEY}&query=${query}`);
+export const searchMovies = (query: string, page = 1) =>
+  api.get(`/search/movie?api_key=${API_KEY}&query=${query}&page=${page}`);
 
 export const getMovieDetails = (id: number) =>
   api.get<MovieDetails>(`/movie/${id}?api_key=${API_KEY}`);
