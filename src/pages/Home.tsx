@@ -6,7 +6,7 @@ import { useDebounce } from "../hooks/useDebounce";
 
 function HomeSkeleton() {
   return (
-    <div aria-busy="true" aria-label="Loading movies">
+    <div className="movie-card-grid" aria-busy="true" aria-label="Loading movies">
       {[1, 2, 3, 4, 5].map((i) => (
         <div key={i} className="skeleton skeleton-card" />
       ))}
@@ -101,16 +101,18 @@ function Home() {
       )}
 
       {movies.length > 0 && (
-        <div className="movie-card-grid">
-          {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
+        <>
+          <div className="movie-card-grid">
+            {movies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
           <div ref={loadMoreRef} className="load-more-sentinel" />
           {isFetchingNextPage && <p className="end-hint">Loading more…</p>}
           {!hasNextPage && !isFetchingNextPage && (
             <p className="end-hint">You&apos;ve reached the end.</p>
           )}
-        </div>
+        </>
       )}
     </div>
   );

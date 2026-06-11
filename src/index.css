@@ -253,6 +253,7 @@ a {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 16px;
+  align-items: stretch;
 }
 
 .movie-card {
@@ -261,14 +262,17 @@ a {
   --movie-card-title-color: #ebeef5;
   --movie-card-panel-bg: rgba(32, 40, 62, 0.8);
   --movie-card-rating-bg: rgba(0, 0, 0, 0.65);
+  --movie-card-font: "Poppins", var(--font);
+  font-family: var(--movie-card-font);
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 282px;
   margin: 0 auto;
+  height: 100%;
   overflow: hidden;
   border-radius: 12px;
-  background: var(--movie-card-panel-bg);
+  background: transparent;
   box-shadow: var(--shadow);
 }
 
@@ -277,6 +281,11 @@ a {
   --movie-card-panel-bg: var(--bg-elevated);
   --movie-card-rating-bg: rgba(0, 0, 0, 0.72);
   border: 1px solid var(--border);
+}
+
+:root[data-theme="dark"] .movie-card {
+  --movie-card-title-color: #ebeef5;
+  --movie-card-panel-bg: rgba(32, 40, 62, 0.8);
 }
 
 .movie-card-media {
@@ -331,9 +340,12 @@ a {
 
 .movie-card-panel {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
   padding: 8px 8px 16px;
+  -webkit-backdrop-filter: blur(40px);
   backdrop-filter: blur(40px);
   background: var(--movie-card-panel-bg);
 }
@@ -342,6 +354,7 @@ a {
   color: var(--movie-card-title-color);
   text-decoration: none;
   padding: 0 8px;
+  text-align: center;
 }
 
 .movie-card-title:hover {
@@ -350,10 +363,12 @@ a {
 
 .movie-card-title h3 {
   margin: 0;
+  min-height: 3em;
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.5;
   letter-spacing: 0.02em;
+  text-align: center;
 }
 
 .movie-card-list-action {
@@ -362,6 +377,8 @@ a {
   gap: 8px;
   padding: 8px;
   margin: 0;
+  margin-top: auto;
+  align-self: flex-start;
   border: none;
   background: transparent;
   color: var(--movie-card-primary);
@@ -376,6 +393,16 @@ a {
 
 .movie-card-list-action:hover {
   opacity: 0.85;
+}
+
+.movie-card-list-action:focus {
+  outline: none;
+}
+
+.movie-card-list-action:focus-visible {
+  outline: 2px solid var(--movie-card-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .movie-card-list-icon {

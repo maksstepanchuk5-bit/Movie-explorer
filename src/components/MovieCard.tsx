@@ -15,8 +15,7 @@ const MovieCard = memo(function MovieCard({ movie }: Props) {
   const posterKey = `${movie.id}:${posterUrl ?? ""}`;
   const posterAlt = movie.title;
   const showPoster = Boolean(posterUrl) && !failedPosterKeys.has(posterKey);
-  const ratingLabel =
-    movie.vote_average != null ? movie.vote_average.toFixed(1).replace(/\.0$/, "") : "—";
+  const ratingLabel = movie.vote_average != null ? movie.vote_average.toFixed(1) : "—";
 
   return (
     <article className="movie-card">
