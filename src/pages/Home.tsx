@@ -101,7 +101,7 @@ function Home() {
       )}
 
       {movies.length > 0 && (
-        <div>
+        <div className="movie-card-grid">
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
