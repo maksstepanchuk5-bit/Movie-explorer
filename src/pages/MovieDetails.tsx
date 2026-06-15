@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getMovieDetails } from "../api/tmdb";
+import { PosterPlaceholder } from "../components/PosterPlaceholder";
 
 function DetailsSkeleton() {
   return (
@@ -80,9 +81,7 @@ function MovieDetails() {
             }
           />
         ) : (
-          <div className="detail-poster detail-poster-fallback" role="img" aria-label={posterAlt}>
-            {posterAlt}
-          </div>
+          <PosterPlaceholder className="detail-poster" label={posterAlt} />
         )}
         <div className="detail-body">
           <h1 className="page-title detail-title">{movie.title}</h1>

@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 import { useWatchlist } from "../store/watchlist";
 import { Link } from "react-router-dom";
 import type { MovieListItem } from "../types/movie";
+import { PosterPlaceholder } from "./PosterPlaceholder";
 
 type Props = {
   movie: MovieListItem;
@@ -32,9 +33,7 @@ const MovieCard = memo(function MovieCard({ movie }: Props) {
             }
           />
         ) : (
-          <div className="movie-card-poster movie-card-poster-fallback" role="img" aria-label={posterAlt}>
-            {posterAlt}
-          </div>
+          <PosterPlaceholder className="movie-card-poster" label={posterAlt} />
         )}
         <div className="movie-card-rating" aria-label={`Rating ${ratingLabel}`}>
           <span className="movie-card-rating-icon" aria-hidden="true">
