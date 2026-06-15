@@ -39,6 +39,10 @@ html {
   scroll-behavior: smooth;
 }
 
+html:has(.app-shell--figma) {
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
   min-height: 100dvh;
@@ -75,7 +79,7 @@ a {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 12px;
   padding: 12px 16px;
   margin-bottom: 24px;
