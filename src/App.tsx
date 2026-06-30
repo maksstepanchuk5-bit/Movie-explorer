@@ -14,7 +14,7 @@ function readStoredTheme(): Theme | null {
 
 function AppShell() {
   const { pathname } = useLocation();
-  const isHome = pathname === "/";
+  const isFigmaShell = pathname === "/" || pathname === "/watchlist";
   const [theme, setTheme] = useState<Theme>(() => readStoredTheme() ?? "light");
 
   useEffect(() => {
@@ -23,9 +23,9 @@ function AppShell() {
   }, [theme]);
 
   return (
-    <div className={`app-shell${isHome ? " app-shell--figma" : ""}`}>
-      {isHome && <HomePageBackground />}
-      {isHome ? (
+    <div className={`app-shell${isFigmaShell ? " app-shell--figma" : ""}`}>
+      {isFigmaShell && <HomePageBackground />}
+      {isFigmaShell ? (
         <header className="figma-navbar">
           <div className="figma-navbar-inner">
             <NavLink className="figma-logo" to="/" end aria-label="Movie Explorer home">
@@ -58,9 +58,6 @@ function AppShell() {
         </header>
       ) : (
         <header className="topbar">
-          <NavLink className="brand" to="/" end>
-            Movie Explorer
-          </NavLink>
           <nav className="nav" aria-label="Main">
             <NavLink className="nav-link" to="/" end>
               Home

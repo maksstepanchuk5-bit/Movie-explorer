@@ -1,0 +1,37 @@
+/* Watchlist layout — same content column as .home-page / .home-page-inner (Figma shell tokens) */
+
+.watchlist-page {
+  position: relative;
+  width: 100%;
+  max-width: var(--home-layout-max);
+  margin: 0 auto;
+  padding: 0 var(--home-gutter) 48px;
+  box-sizing: border-box;
+}
+
+.watchlist-page-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.watchlist-page .page-stack {
+  gap: 24px;
+}
+
+.watchlist-page .empty-state {
+  background: rgba(32, 40, 62, 0.6);
+  border-color: var(--home-input-border);
+  color: var(--home-text-muted);
+}
+
+:root[data-theme="light"] .watchlist-page .empty-state {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
