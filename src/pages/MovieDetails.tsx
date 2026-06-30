@@ -109,6 +109,8 @@ function MovieDetails() {
   const posterKey = `${movie.id}:${posterSrc ?? ""}`;
   const posterAlt = movie.title;
   const showPoster = Boolean(posterSrc) && !failedPosterKeys.has(posterKey);
+  const ratingLabel =
+    movie.vote_average != null ? movie.vote_average.toFixed(1) : "—";
 
   return (
     <MovieDetailsLayout>
@@ -134,14 +136,19 @@ function MovieDetails() {
             {movie.runtime != null && movie.runtime > 0 && (
               <span>{movie.runtime} min</span>
             )}
-            <span>★ {movie.vote_average?.toFixed(1) ?? "—"}</span>
+            <div className="movie-card-rating" aria-label={`Rating ${ratingLabel}`}>
+              <span className="movie-card-rating-icon" aria-hidden="true">
+                ★
+              </span>
+              <span>{ratingLabel}</span>
+            </div>
           </div>
           {movie.genres && movie.genres.length > 0 && (
             <p className="genres-line">
               {movie.genres.map((g) => g.name).join(" · ")}
             </p>
           )}
-          <WatchlistToggle movie={toWatchlistMovie(movie)} />
+          <WatchlistToggle movie={toWatchlistMovie(movie)} variant="inline" />
           <p>{movie.overview || "No overview available."}</p>
           <Link className="movie-details-back-link" to="/">
             ← Back to home
@@ -149,6 +156,7 @@ function MovieDetails() {
         </div>
       </div>
     </MovieDetailsLayout>
-  );}
+  );
+}
 
 export default MovieDetails;
