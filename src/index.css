@@ -383,50 +383,6 @@ a {
   text-align: center;
 }
 
-.movie-card-list-action {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
-  margin: 0;
-  margin-top: auto;
-  align-self: flex-start;
-  border: none;
-  background: transparent;
-  color: var(--movie-card-primary);
-  font: inherit;
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  text-align: left;
-}
-
-.movie-card-list-action:hover {
-  opacity: 0.85;
-}
-
-.movie-card-list-action:focus {
-  outline: none;
-}
-
-.movie-card-list-action:focus-visible {
-  outline: 2px solid var(--movie-card-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-.movie-card-list-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  font-size: 1.25rem;
-  line-height: 1;
-}
-
 /* Skeleton */
 .skeleton {
   animation: shimmer 1.2s ease-in-out infinite;

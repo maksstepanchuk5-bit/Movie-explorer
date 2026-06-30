@@ -1,0 +1,54 @@
+/* Watchlist toggle — Figma node 550:1791 (Primary/400, Link/Regular) */
+
+.watchlist-toggle {
+  --watchlist-toggle-color: #7b6ef6;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  margin-top: auto;
+  margin-left: 8px;
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--watchlist-toggle-color);
+  font-family: "Poppins", var(--font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.32px;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.watchlist-toggle:hover {
+  opacity: 0.85;
+}
+
+.watchlist-toggle:focus {
+  outline: none;
+}
+
+.watchlist-toggle:focus-visible {
+  outline: 2px solid var(--watchlist-toggle-color);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.watchlist-toggle__icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.watchlist-toggle[aria-pressed="true"] .watchlist-toggle__label {
+  color: var(--danger);
+}
+
+.watchlist-toggle[aria-pressed="true"] .watchlist-toggle__icon {
+  color: var(--danger);
+}
