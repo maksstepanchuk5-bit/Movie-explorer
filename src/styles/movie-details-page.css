@@ -1,0 +1,230 @@
+/* Movie details — same Figma shell tokens and content column as .home-page */
+
+.movie-details-page {
+  position: relative;
+  width: 100%;
+  max-width: var(--home-layout-max);
+  margin: 0 auto;
+  padding: 0 var(--home-gutter) 48px;
+  box-sizing: border-box;
+}
+
+.movie-details-page-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.movie-details-page .detail-layout {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .movie-details-page .detail-layout {
+    grid-template-columns: min(280px, 34%) 1fr;
+    align-items: start;
+    gap: 40px;
+  }
+}
+
+.movie-details-page .detail-poster {
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 266 / 400;
+  min-height: unset;
+  margin: 0 auto;
+  border: none;
+  border-radius: 8px;
+  box-shadow: none;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .movie-details-page .detail-poster {
+    margin: 0;
+  }
+}
+
+.movie-details-page .poster-placeholder.detail-poster {
+  border: none;
+  box-shadow: none;
+}
+
+:root[data-theme="dark"] .movie-details-page .poster-placeholder.detail-poster {
+  --poster-placeholder-bg: #20283e;
+}
+
+:root[data-theme="light"] .app-shell--figma .movie-details-page .poster-placeholder.detail-poster {
+  --poster-placeholder-bg: #e5e7eb;
+}
+
+.movie-details-page .detail-title {
+  margin: 0 0 16px;
+  font-family: var(--home-font);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--home-text);
+}
+
+.movie-details-page .detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-family: var(--home-font);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--home-text-muted);
+}
+
+.movie-details-page .genres-line {
+  margin: 0 0 20px;
+  font-family: var(--home-font);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--home-text-section);
+}
+
+.movie-details-page .detail-body p {
+  margin: 0 0 16px;
+  font-family: var(--home-font);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--home-text-muted);
+}
+
+.movie-details-page .detail-body .watchlist-toggle {
+  margin-left: 0;
+  margin-bottom: 20px;
+}
+
+.movie-details-page .detail-layout--state {
+  grid-template-columns: 1fr;
+}
+
+.movie-details-state {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 640px;
+}
+
+.movie-details-page .detail-skeleton-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.movie-details-page .detail-skeleton-title {
+  height: 36px;
+  max-width: 70%;
+  margin-bottom: 4px;
+}
+
+.movie-details-page .detail-skeleton-meta {
+  height: 20px;
+  max-width: 45%;
+}
+
+.movie-details-page .detail-skeleton-toggle {
+  height: 24px;
+  max-width: 180px;
+  margin-bottom: 8px;
+}
+
+.movie-details-page .movie-details-back-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 8px;
+  color: var(--home-primary);
+  font-family: var(--home-font);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.32px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.movie-details-page .movie-details-back-link:hover {
+  color: var(--home-accent);
+}
+
+.movie-details-page .inline-error {
+  background: rgba(32, 40, 62, 0.6);
+  border-color: var(--home-input-border);
+  color: var(--danger);
+}
+
+:root[data-theme="light"] .app-shell--figma .movie-details-page .inline-error {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+}
+
+.movie-details-page .skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(32, 40, 62, 0.85),
+    rgba(50, 59, 84, 0.55),
+    rgba(32, 40, 62, 0.85)
+  );
+  background-size: 200% 100%;
+}
+
+:root[data-theme="light"] .app-shell--figma .movie-details-page .skeleton {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--text) 8%, var(--bg-elevated)),
+    color-mix(in srgb, var(--text) 4%, var(--bg-elevated)),
+    color-mix(in srgb, var(--text) 8%, var(--bg-elevated))
+  );
+  background-size: 200% 100%;
+}
+
+.movie-details-page .detail-skeleton-poster {
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 266 / 400;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+
+@media (min-width: 768px) {
+  .movie-details-page .detail-skeleton-poster {
+    margin: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .movie-details-page-inner {
+    padding-top: 24px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-details-page {
+    padding: 0 var(--home-gutter) 32px;
+  }
+
+  .movie-details-page-inner {
+    padding-top: 20px;
+    gap: 16px;
+  }
+
+  .movie-details-page .detail-title {
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+  }
+}

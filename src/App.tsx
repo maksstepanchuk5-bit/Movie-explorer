@@ -14,7 +14,8 @@ function readStoredTheme(): Theme | null {
 
 function AppShell() {
   const { pathname } = useLocation();
-  const isFigmaShell = pathname === "/" || pathname === "/watchlist";
+  const isFigmaShell =
+    pathname === "/" || pathname === "/watchlist" || pathname.startsWith("/movie/");
   const [theme, setTheme] = useState<Theme>(() => readStoredTheme() ?? "light");
 
   useEffect(() => {
