@@ -27,6 +27,10 @@
   opacity: 0.85;
 }
 
+.watchlist-toggle--inline:hover {
+  opacity: 1;
+}
+
 .watchlist-toggle:focus {
   outline: none;
 }

@@ -146,12 +146,13 @@
 
 .movie-details-page .detail-body .watchlist-toggle--inline[aria-pressed="true"] {
   color: var(--danger);
-  transition: opacity 0.15s ease;
+  opacity: 1;
+  transition: color 0.15s ease;
 }
 
 .movie-details-page .detail-body .watchlist-toggle--inline[aria-pressed="true"]:hover {
-  color: var(--danger);
-  opacity: 0.85;
+  opacity: 1;
+  color: #ef4444;
 }
 
 .movie-details-page .detail-body .watchlist-toggle--inline[aria-pressed="true"] .watchlist-toggle__label {
