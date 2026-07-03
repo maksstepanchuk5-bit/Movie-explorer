@@ -52,3 +52,24 @@
 .watchlist-toggle[aria-pressed="true"] .watchlist-toggle__icon {
   color: var(--danger);
 }
+
+/* Home card - remove hover matches Movie Details */
+
+.movie-card-panel .watchlist-toggle[aria-pressed="true"] {
+  opacity: 1;
+  transition: color 0.15s ease;
+}
+
+.movie-card-panel .watchlist-toggle[aria-pressed="true"] .watchlist-toggle__label,
+.movie-card-panel .watchlist-toggle[aria-pressed="true"] .watchlist-toggle__icon {
+  transition: color 0.15s ease;
+}
+
+.movie-card-panel .watchlist-toggle.watchlist-toggle[aria-pressed="true"]:hover {
+  opacity: 1;
+}
+
+.movie-card-panel .watchlist-toggle[aria-pressed="true"]:hover .watchlist-toggle__label,
+.movie-card-panel .watchlist-toggle[aria-pressed="true"]:hover .watchlist-toggle__icon {
+  color: #ef4444;
+}
