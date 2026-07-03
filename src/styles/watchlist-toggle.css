@@ -65,7 +65,7 @@
   transition: color 0.15s ease;
 }
 
-.movie-card-panel .watchlist-toggle.watchlist-toggle[aria-pressed="true"]:hover {
+.movie-card-panel .watchlist-toggle[aria-pressed="true"]:hover {
   opacity: 1;
 }
 
