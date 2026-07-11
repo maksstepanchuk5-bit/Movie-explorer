@@ -56,6 +56,7 @@
   color: var(--danger);
 }
 
+
 /* Figma card panel — 8px inset aligns toggle with card title row */
 .movie-card-panel .watchlist-toggle {
   margin-left: 8px;
@@ -67,4 +68,25 @@
   gap: 0;
   font-size: 1rem;
   line-height: 1.5;
+}
+
+/* Home card - remove hover matches Movie Details */
+
+.movie-card-panel .watchlist-toggle[aria-pressed="true"] {
+  opacity: 1;
+  transition: color 0.15s ease;
+}
+
+.movie-card-panel .watchlist-toggle[aria-pressed="true"] .watchlist-toggle__label,
+.movie-card-panel .watchlist-toggle[aria-pressed="true"] .watchlist-toggle__icon {
+  transition: color 0.15s ease;
+}
+
+.movie-card-panel .watchlist-toggle[aria-pressed="true"]:hover {
+  opacity: 1;
+}
+
+.movie-card-panel .watchlist-toggle[aria-pressed="true"]:hover .watchlist-toggle__label,
+.movie-card-panel .watchlist-toggle[aria-pressed="true"]:hover .watchlist-toggle__icon {
+  color: #ef4444;
 }
