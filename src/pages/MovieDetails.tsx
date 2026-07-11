@@ -1,22 +1,69 @@
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { getMovieDetails } from "../api/tmdb";
 import { PosterPlaceholder } from "../components/PosterPlaceholder";
+import { WatchlistToggle } from "../components/WatchlistToggle";
+import type { MovieListItem } from "../types/movie";
+import "../styles/movie-details-page.css";
+
+function MovieDetailsLayout({ children }: { children: ReactNode }) {
+  return (
+    <div className="movie-details-page">
+      <div className="movie-details-page-inner">{children}</div>
+    </div>
+  );
+}
 
 function DetailsSkeleton() {
   return (
-    <div className="detail-layout skeleton-hero" aria-busy="true" aria-label="Loading movie">
-      <div className="skeleton skeleton-poster" />
-      <div>
-        <div className="skeleton skeleton-block" style={{ height: 28, maxWidth: "70%" }} />
+    <div className="detail-layout" aria-busy="true" aria-label="Loading movie">
+      <div className="skeleton detail-skeleton-poster" />
+      <div className="detail-skeleton-body">
+        <div className="skeleton skeleton-block detail-skeleton-title" />
+        <div className="skeleton skeleton-block detail-skeleton-meta" />
+        <div className="skeleton skeleton-block detail-skeleton-toggle" />
+        <div className="skeleton skeleton-block" />
+        <div className="skeleton skeleton-block" />
         <div className="skeleton skeleton-block short" />
-        <div className="skeleton skeleton-block" />
-        <div className="skeleton skeleton-block" />
-        <div className="skeleton skeleton-block" />
       </div>
     </div>
   );
+}
+
+function MovieDetailsState({
+  message,
+}: {
+  message: string;
+}) {
+  return (
+    <div className="detail-layout detail-layout--state">
+      <div className="movie-details-state">
+        <div className="inline-error" role="alert">
+          {message}
+        </div>
+        <Link className="movie-details-back-link" to="/">
+          ← Back to home
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function toWatchlistMovie(movie: {
+  id: number;
+  title: string;
+  poster_path: string | null;
+  release_date?: string;
+  vote_average?: number;
+}): MovieListItem {
+  return {
+    id: movie.id,
+    title: movie.title,
+    poster_path: movie.poster_path,
+    release_date: movie.release_date,
+    vote_average: movie.vote_average,
+  };
 }
 
 function MovieDetails() {
@@ -32,42 +79,41 @@ function MovieDetails() {
 
   if (!id || !Number.isFinite(numericId) || numericId <= 0) {
     return (
-      <div className="page-stack">
-        <div className="inline-error" role="alert">
-          Invalid movie link.
-        </div>
-        <Link to="/">← Back to home</Link>
-      </div>
+      <MovieDetailsLayout>
+        <MovieDetailsState message="Invalid movie link." />
+      </MovieDetailsLayout>
     );
   }
 
   if (isLoading) {
     return (
-      <div className="page-stack">
+      <MovieDetailsLayout>
         <DetailsSkeleton />
-      </div>
+      </MovieDetailsLayout>
     );
   }
 
   if (isError || !data?.data) {
     return (
-      <div className="page-stack">
-        <div className="inline-error" role="alert">
-          {error instanceof Error ? error.message : "Could not load this movie."}
-        </div>
-        <Link to="/">← Back to home</Link>
-      </div>
+      <MovieDetailsLayout>
+        <MovieDetailsState
+          message={
+            error instanceof Error ? error.message : "Could not load this movie."
+          }
+        />
+      </MovieDetailsLayout>
     );
   }
-
   const movie = data.data;
   const posterSrc = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null;
   const posterKey = `${movie.id}:${posterSrc ?? ""}`;
   const posterAlt = movie.title;
   const showPoster = Boolean(posterSrc) && !failedPosterKeys.has(posterKey);
+  const ratingLabel =
+    movie.vote_average != null ? movie.vote_average.toFixed(1) : "—";
 
   return (
-    <div className="page-stack">
+    <MovieDetailsLayout>
       <div className="detail-layout">
         {showPoster ? (
           <img
@@ -84,26 +130,32 @@ function MovieDetails() {
           <PosterPlaceholder className="detail-poster" label={posterAlt} />
         )}
         <div className="detail-body">
-          <h1 className="page-title detail-title">{movie.title}</h1>
+          <h1 className="detail-title">{movie.title}</h1>
           <div className="detail-meta">
             <span>{movie.release_date?.slice(0, 4) ?? "—"}</span>
             {movie.runtime != null && movie.runtime > 0 && (
               <span>{movie.runtime} min</span>
             )}
-            <span>★ {movie.vote_average?.toFixed(1) ?? "—"}</span>
+            <div className="movie-card-rating" aria-label={`Rating ${ratingLabel}`}>
+              <span className="movie-card-rating-icon" aria-hidden="true">
+                ★
+              </span>
+              <span>{ratingLabel}</span>
+            </div>
           </div>
           {movie.genres && movie.genres.length > 0 && (
-            <p className="muted genres-line">
+            <p className="genres-line">
               {movie.genres.map((g) => g.name).join(" · ")}
             </p>
           )}
+          <WatchlistToggle movie={toWatchlistMovie(movie)} variant="inline" />
           <p>{movie.overview || "No overview available."}</p>
-          <Link className="nav-link link-inline" to="/">
+          <Link className="movie-details-back-link" to="/">
             ← Back to home
           </Link>
         </div>
       </div>
-    </div>
+    </MovieDetailsLayout>
   );
 }
 

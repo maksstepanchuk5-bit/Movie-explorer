@@ -4,6 +4,7 @@ import "../styles/watchlist-toggle.css";
 
 type Props = {
   movie: MovieListItem;
+  variant?: "card" | "inline";
 };
 
 function WatchlistAddIcon() {
@@ -64,20 +65,27 @@ function WatchlistRemoveIcon() {
   );
 }
 
-export function WatchlistToggle({ movie }: Props) {
+export function WatchlistToggle({ movie, variant = "card" }: Props) {
   const { add, remove, watchlist } = useWatchlist();
   const isSaved = watchlist.some((m) => m.id === movie.id);
+  const isInline = variant === "inline";
 
   return (
     <button
       type="button"
-      className="watchlist-toggle"
+      className={`watchlist-toggle${isInline ? " watchlist-toggle--inline" : ""}`}
       aria-pressed={isSaved}
       onClick={() => (isSaved ? remove(movie.id) : add(movie))}
     >
-      {isSaved ? <WatchlistRemoveIcon /> : <WatchlistAddIcon />}
+      {!isInline && (isSaved ? <WatchlistRemoveIcon /> : <WatchlistAddIcon />)}
       <span className="watchlist-toggle__label">
-        {isSaved ? "Remove from Watchlist" : "Add to Watchlist"}
+        {isInline
+          ? isSaved
+            ? "× Remove from Watchlist"
+            : "+ Add to Watchlist"
+          : isSaved
+            ? "Remove from Watchlist"
+            : "Add to Watchlist"}
       </span>
     </button>
   );

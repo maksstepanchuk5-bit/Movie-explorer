@@ -7,7 +7,6 @@
   gap: 8px;
   margin: 0;
   margin-top: auto;
-  margin-left: 8px;
   align-self: flex-start;
   padding: 0;
   border: none;
@@ -26,6 +25,10 @@
 
 .watchlist-toggle:hover {
   opacity: 0.85;
+}
+
+.watchlist-toggle--inline:hover {
+  opacity: 1;
 }
 
 .watchlist-toggle:focus {
@@ -51,6 +54,20 @@
 
 .watchlist-toggle[aria-pressed="true"] .watchlist-toggle__icon {
   color: var(--danger);
+}
+
+
+/* Figma card panel — 8px inset aligns toggle with card title row */
+.movie-card-panel .watchlist-toggle {
+  margin-left: 8px;
+}
+
+/* Movie details — inline prefix row, aligned with .movie-details-back-link */
+.watchlist-toggle--inline {
+  margin-top: 0;
+  gap: 0;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 /* Home card - remove hover matches Movie Details */
