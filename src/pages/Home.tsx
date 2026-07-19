@@ -157,7 +157,7 @@ function Home() {
         return getPopularMovies(pageParam);
       },
       getNextPageParam: (lastPage) => {
-        const { page, total_pages } = lastPage.data;
+        const { page, total_pages } = lastPage;
         return page < total_pages ? page + 1 : undefined;
       },
       initialPageParam: 1,
@@ -176,8 +176,8 @@ function Home() {
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, debouncedQuery]);
 
-  const movies = data?.pages.flatMap((page) => page.data.results) ?? [];
-  const apiTotal = data?.pages[0]?.data?.total_results;
+  const movies = data?.pages.flatMap((page) => page.results) ?? [];
+  const apiTotal = data?.pages[0]?.total_results;
   const displayCount =
     debouncedQuery && apiTotal != null
       ? apiTotal

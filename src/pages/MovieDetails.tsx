@@ -93,7 +93,7 @@ function MovieDetails() {
     );
   }
 
-  if (isError || !data?.data) {
+  if (isError || !data) {
     return (
       <MovieDetailsLayout>
         <MovieDetailsState
@@ -104,7 +104,7 @@ function MovieDetails() {
       </MovieDetailsLayout>
     );
   }
-  const movie = data.data;
+  const movie = data;
   const posterSrc = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null;
   const posterKey = `${movie.id}:${posterSrc ?? ""}`;
   const posterAlt = movie.title;
