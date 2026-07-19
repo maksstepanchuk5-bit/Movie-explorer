@@ -8,19 +8,29 @@ export const api = axios.create({
 });
 
 export class TmdbApiError extends Error {
-  constructor(message: string) {
-    super(message);
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
     this.name = "TmdbApiError";
   }
 }
 
-function toTmdbApiError(error: unknown): TmdbApiError {
+type RequestOptions = {
+  notFoundMessage?: string;
+};
+
+function toTmdbApiError(
+  error: unknown,
+  options?: RequestOptions,
+): TmdbApiError {
+  const createError = (message: string) =>
+    new TmdbApiError(message, { cause: error });
+
   if (!axios.isAxiosError(error)) {
-    return new TmdbApiError("Something went wrong. Please try again.");
+    return createError("Something went wrong. Please try again.");
   }
 
   if (!error.response) {
-    return new TmdbApiError(
+    return createError(
       "Could not reach the movie service. Check your internet connection.",
     );
   }
@@ -28,36 +38,36 @@ function toTmdbApiError(error: unknown): TmdbApiError {
   const status = error.response.status;
 
   if (status === 401 || status === 403) {
-    return new TmdbApiError(
+    return createError(
       "Movie service is not configured correctly. Please try again later.",
     );
   }
 
-  if (status === 404) {
-    return new TmdbApiError("Movie not found.");
+  if (status === 404 && options?.notFoundMessage) {
+    return createError(options.notFoundMessage);
   }
 
   if (status === 429) {
-    return new TmdbApiError(
+    return createError(
       "Too many requests. Please wait a moment and try again.",
     );
   }
 
   if (status >= 500) {
-    return new TmdbApiError(
+    return createError(
       "Movie service is temporarily unavailable. Please try again later.",
     );
   }
 
-  return new TmdbApiError("Could not load movies. Please try again later.");
+  return createError("Could not load movies. Please try again later.");
 }
 
-async function request<T>(url: string): Promise<T> {
+async function request<T>(url: string, options?: RequestOptions): Promise<T> {
   try {
     const response = await api.get<T>(url);
     return response.data;
   } catch (error) {
-    throw toTmdbApiError(error);
+    throw toTmdbApiError(error, options);
   }
 }
 
@@ -72,5 +82,7 @@ export const searchMovies = (query: string, page = 1) =>
   );
 
 export const getMovieDetails = (id: number) =>
-  request<MovieDetails>(`/movie/${id}?api_key=${API_KEY}`);
+  request<MovieDetails>(`/movie/${id}?api_key=${API_KEY}`, {
+    notFoundMessage: "Movie not found.",
+  });
 

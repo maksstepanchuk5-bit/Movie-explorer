@@ -36,9 +36,10 @@ describe("tmdb api", () => {
     await expect(getPopularMovies(1)).resolves.toEqual(response);
     expect(api.get).toHaveBeenCalledOnce();
     expect(api.get).toHaveBeenCalledWith(
-      expect.stringContaining("/movie/popular"),
+      expect.stringMatching(
+        /^\/movie\/popular\?api_key=[^&]*&page=1$/,
+      ),
     );
-    expect(api.get).toHaveBeenCalledWith(expect.stringContaining("page=1"));
   });
 
   it("encodes the search query and returns results", async () => {
@@ -56,12 +57,10 @@ describe("tmdb api", () => {
     await expect(searchMovies("star wars", 2)).resolves.toEqual(response);
     expect(api.get).toHaveBeenCalledOnce();
     expect(api.get).toHaveBeenCalledWith(
-      expect.stringContaining("/search/movie"),
+      expect.stringMatching(
+        /^\/search\/movie\?api_key=[^&]*&query=star%20wars&page=2$/,
+      ),
     );
-    expect(api.get).toHaveBeenCalledWith(
-      expect.stringContaining("query=star%20wars"),
-    );
-    expect(api.get).toHaveBeenCalledWith(expect.stringContaining("page=2"));
   });
 
   it("returns movie details", async () => {
@@ -82,21 +81,26 @@ describe("tmdb api", () => {
 
     await expect(getMovieDetails(1)).resolves.toEqual(movie);
     expect(api.get).toHaveBeenCalledOnce();
-    expect(api.get).toHaveBeenCalledWith(expect.stringContaining("/movie/1"));
+    expect(api.get).toHaveBeenCalledWith(
+      expect.stringMatching(/^\/movie\/1\?api_key=[^&]*$/),
+    );
   });
 
   it("wraps a network error in TmdbApiError", async () => {
-    vi.spyOn(api, "get").mockRejectedValueOnce({
+    const networkError = {
       isAxiosError: true,
       response: undefined,
-    });
+    };
+    vi.spyOn(api, "get").mockRejectedValueOnce(networkError);
 
     const promise = getPopularMovies();
 
     await expect(promise).rejects.toBeInstanceOf(TmdbApiError);
-    await expect(promise).rejects.toThrow(
-      "Could not reach the movie service. Check your internet connection.",
-    );
+    await expect(promise).rejects.toMatchObject({
+      message:
+        "Could not reach the movie service. Check your internet connection.",
+      cause: networkError,
+    });
   });
 
   it("returns a configuration message for status 401", async () => {
@@ -117,6 +121,17 @@ describe("tmdb api", () => {
     });
 
     await expect(getMovieDetails(999999)).rejects.toThrow("Movie not found.");
+  });
+
+  it("uses a list fallback message for status 404", async () => {
+    vi.spyOn(api, "get").mockRejectedValueOnce({
+      isAxiosError: true,
+      response: { status: 404 },
+    });
+
+    await expect(getPopularMovies()).rejects.toThrow(
+      "Could not load movies. Please try again later.",
+    );
   });
 
   it("returns a friendly message for status 429", async () => {
