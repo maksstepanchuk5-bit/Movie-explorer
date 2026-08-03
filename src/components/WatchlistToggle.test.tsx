@@ -45,7 +45,7 @@ describe("WatchlistToggle", () => {
         await user.click(screen.getByRole("button", {name: /add to watchlist/i }));
 
         expect(screen.getByRole("button", { name: /remove from watchlist/i })).toHaveAttribute(
-            "aria-pressed", 
+            "aria-pressed",
             "true",);
 
         expect(JSON.parse(localStorage.getItem("watchlist") ?? "[]")).toEqual([movie]);
@@ -61,7 +61,7 @@ describe("WatchlistToggle", () => {
         await user.click(screen.getByRole("button", { name: /remove from watchlist/i}));
 
         expect(screen.getByRole("button", { name: /add to watchlist/i })).toHaveAttribute(
-            "aria-pressed", 
+            "aria-pressed",
             "false",);
 
         expect(JSON.parse(localStorage.getItem("watchlist") ?? "[]")).toEqual([]);

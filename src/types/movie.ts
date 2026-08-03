@@ -22,3 +22,10 @@ export type MovieDetails = {
   overview?: string;
   genres?: Genre[];
 };
+
+export type MovieListResponse = {
+  page: number;
+  results: MovieListItem[];
+  total_pages: number;
+  total_results: number;
+};

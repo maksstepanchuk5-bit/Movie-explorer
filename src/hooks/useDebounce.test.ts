@@ -11,7 +11,7 @@ describe("useDebounce", () => {
         vi.runOnlyPendingTimers();
         vi.useRealTimers();
       });
-    
+
     it("returns the initial value immediately", () => {
         const { result } = renderHook(() => useDebounce("batman"));
         expect(result.current).toBe("batman");
@@ -48,7 +48,7 @@ describe("useDebounce", () => {
         );
 
         rerender({ value: "joker"});
-        
+
         act(() => {
             vi.advanceTimersByTime(300);
         });

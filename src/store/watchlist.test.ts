@@ -63,4 +63,3 @@ describe("useWatchlist", () => {
     expect(JSON.parse(localStorage.getItem("watchlist") ?? "[]")).toEqual([]);
   });
 });
-
